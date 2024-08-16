@@ -1,0 +1,114 @@
+{% extends "teachers/base.html" %}
+
+{% block body %}
+<h3 class="m-4">All Teachers</h3>
+<div class="row">
+  <div class="col-12">
+    {% if teachers %}
+    <div class="card bg-light ms-4 me-4 mb-4">
+      <div class="card-header">
+        <i class="fa-solid fa-list fa-lg"></i>Teacher Records
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">TSC Number </th>
+                  <th scope="col">First Name</th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col"> Responsibility </th>
+                  <th scope="col">Subject</th>
+                  <th scope="col"> phone number</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for teacher in teachers %}
+                <tr>
+                  <td>{{ teacher.TSC_Number }}</td>
+                  <td>{{ teacher.first_name }}</td>
+                  <td>{{ teacher.last_name }}</td>
+                  <td>{{ teacher.Rensponsibility }}</td>
+                  <td>{{ teacher.Subject }}</td>
+                  <td>{{ teacher.phone_number }}</td>
+                  <td><button type="button" class="btn-btn-success me-1" href="{% url 'view_teacher' teacher.id %}" data-bs-toggle="modal" data-bs-target="#myModal{{teacher.id}}">
+                    <i class="fa-solid fa-circle-info fa-lg"></i>
+                  </button>
+                
+                  <!--Modal-View Teacher-->
+                  <div class="modal" id="myModal{{teacher.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">
+                            Teacher : {{ teacher.first_name }} {{ teacher.last_name }}
+                          </h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"></span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <ul class="list=unstyled">
+                            <li>TSC_Number: <strong>{{ teacher.TSC_Number }}</strong></li>
+                            <li>First Name: <strong>{{ teacher.first_name }}</strong></li>
+                            <li>Last Name: <strong>{{ teacher.last_name }}</strong></li>
+                            <li>Responsibility: <strong>{{ teacher.Rensponsibility }}</strong></li>
+                            <li>Subjects: <strong>{{ teacher.Subject }}</strong></li>
+                            <li>Phone Number: <strong>{{ teacher.phone_number }}</strong></li>
+                          </ul>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <a class="btn btn-warning me-1" href="{% url 'edit' teacher.id %}">
+                  <i class="fa-solid fa-pen-to-square fa-lg"></i></a>
+                  <button type="button" class="btn-btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{teacher.id}}">
+                    <i class="fa-solid fa-trash-can fa-lg"></i>
+                  </button>
+
+                  <!--Modal-Delete Teacher-->
+                  <div class="modal" id="delete{{teacher.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">
+                            Teacher : {{ teacher.first_name }} {{ teacher.last_name }}
+                          </h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"></span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <p>Are you sure you want to delete this teacher?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <form action="{% url 'delete' teacher.id %}" method="POST">
+                          {% csrf_token %} 
+                          <input type="submit" class="btn-btn-primary" value="Delete">
+                          </form>
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </p>
+      </div>
+    {% else %}
+    <h5 class="alert alert-primary ms-4 me-4">No Teacher Records</h5>
+    {% endif %}
+    
+    </div>
+  </div>
+{% endblock %}
